@@ -16,6 +16,14 @@
 
 #include <gtk/gtk.h>
 
+static void setAllMargins(GtkWidget *widget, gint size) {
+     gtk_widget_set_margin_top(widget, size);
+     gtk_widget_set_margin_start(widget, size);
+     gtk_widget_set_margin_end(widget, size);
+     gtk_widget_set_margin_bottom(widget, size);
+}
+
+
 /* Create a Section Header pseudo Widget
  *
  * @param name      - the name of the section
@@ -63,16 +71,39 @@ static GtkWidget * createSection(const gchar* name, const gchar* icon_name) {
     gtk_widget_set_margin_top(separator, 5);
 
     section = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_widget_set_margin_top(section, 5);
-    gtk_widget_set_margin_start(section, 5);
-    gtk_widget_set_margin_end(section, 5);
-    gtk_widget_set_margin_bottom(section, 5);
+    setAllMargins(section, 5);
     gtk_container_add(GTK_CONTAINER(section), header);
     gtk_container_add(GTK_CONTAINER(section), separator);
 
     return section;
 }
 
+static GtkWidget * createSettingsWidget() {
+    GtkWidget *settings;
+    GtkWidget *pad1;
+    GtkWidget *pad2;
+    GtkWidget *network;
+    GtkWidget *vpn;
+
+    pad1 = gtk_label_new("");
+    gtk_widget_set_hexpand(pad1,TRUE);
+    pad2 = gtk_label_new("");
+    gtk_widget_set_hexpand(pad2,TRUE);
+
+    network  = gtk_button_new_from_icon_name("preferences-system-symbolic", GTK_ICON_SIZE_MENU);
+    setAllMargins(network, 5);
+
+    vpn      = gtk_button_new_from_icon_name("network-vpn-symbolic", GTK_ICON_SIZE_MENU);
+    setAllMargins(vpn, 5);
+
+    settings = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(settings), pad1);
+    gtk_container_add(GTK_CONTAINER(settings), network);
+    gtk_container_add(GTK_CONTAINER(settings), vpn);
+    gtk_container_add(GTK_CONTAINER(settings), pad2);
+
+    return settings;
+}
 /* Build the test window and setup the applet inside of it
  *
  * @param app       - the application object for this instance
@@ -84,15 +115,19 @@ static void activate(GtkApplication* app, gpointer user_data) {
     GtkWidget *wired_section;
     GtkWidget *wifi_section;
     GtkWidget *wlan_section;
+    GtkWidget *settings;
 
     wired_section = createSection("Wired Connections",    "network-wired-symbolic");
     wifi_section  = createSection("WiFi Connections",     "network-wireless-symbolic");
     wlan_section  = createSection("Cellular Connections", "network-cellular-signal-excellent-symbolic");
 
+    settings = createSettingsWidget();
+
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(box), wired_section);
     gtk_container_add(GTK_CONTAINER(box), wifi_section);
     gtk_container_add(GTK_CONTAINER(box), wlan_section);
+    gtk_container_add(GTK_CONTAINER(box), settings);
 
     window = gtk_application_window_new (app);
     gtk_window_set_title(GTK_WINDOW(window), "Testing Network Applet");
