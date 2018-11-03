@@ -115,11 +115,13 @@ static void activate(GtkApplication* app, gpointer user_data) {
     GtkWidget *wired_section;
     GtkWidget *wifi_section;
     GtkWidget *wlan_section;
+    GtkWidget *vpn_section;
     GtkWidget *settings;
 
     wired_section = createSection("Wired Connections",    "network-wired-symbolic");
     wifi_section  = createSection("WiFi Connections",     "network-wireless-symbolic");
     wlan_section  = createSection("Cellular Connections", "network-cellular-signal-excellent-symbolic");
+    vpn_section   = createSection("VPN Connections",      "network-vpn-symbolic");
 
     settings = createSettingsWidget();
 
@@ -127,6 +129,7 @@ static void activate(GtkApplication* app, gpointer user_data) {
     gtk_container_add(GTK_CONTAINER(box), wired_section);
     gtk_container_add(GTK_CONTAINER(box), wifi_section);
     gtk_container_add(GTK_CONTAINER(box), wlan_section);
+    gtk_container_add(GTK_CONTAINER(box), vpn_section);
     gtk_container_add(GTK_CONTAINER(box), settings);
 
     window = gtk_application_window_new (app);
