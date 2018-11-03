@@ -16,6 +16,24 @@
 
 #include <gtk/gtk.h>
 
+static GtkWidget * createSectionHeader(const gchar* name, const gchar* icon_name) {
+    GtkWidget *header;
+    GtkWidget *icon;
+    GtkWidget *label;
+
+    icon  = gtk_image_new_from_icon_name(icon_name, GTK_ICON_SIZE_MENU);
+
+    label = gtk_label_new(name);
+    gtk_widget_set_halign(label, GTK_ALIGN_START);
+
+    header = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_box_pack_start(GTK_BOX(header), icon, FALSE, FALSE, 5);
+    //gtk_container_add(GTK_CONTAINER(header), icon);
+    gtk_box_pack_start(GTK_BOX(header), label, TRUE, TRUE, 5);
+    //gtk_container_add(GTK_CONTAINER(header), label);
+    return header;
+}
+
 /* Build the test window and setup the applet inside of it
  *
  * @param app       - the application object for this instance
@@ -23,9 +41,25 @@
  */
 static void activate(GtkApplication* app, gpointer user_data) {
   GtkWidget *window;
+  GtkWidget *box;
+  GtkWidget *wired_header;
+  GtkWidget *wifi_header;
+  GtkWidget *wlan_header;
+
+  wired_header = createSectionHeader("Wired Connections", "network-wired-symbolic");
+  wifi_header = createSectionHeader("WiFi Connections", "network-wireless-symbolic");
+  wlan_header = createSectionHeader("Cellular Connections", "network-cellular-signal-excellent-symbolic");
+
+  box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add(GTK_CONTAINER(box), wired_header);
+  gtk_container_add(GTK_CONTAINER(box), wifi_header);
+  gtk_container_add(GTK_CONTAINER(box), wlan_header);
+
   window = gtk_application_window_new (app);
   gtk_window_set_title(GTK_WINDOW (window), "Testing Network Applet");
   gtk_window_set_default_size(GTK_WINDOW (window), 200, 200);
+  gtk_container_add(GTK_CONTAINER(window), box);
+
   gtk_widget_show_all(window);
 }
 

@@ -1,6 +1,16 @@
 # budgie-network-applet
 Applet for managing network connections in Budgie
 
+## Dependencies
+
+* libgtk-3-devel
+
+## Build
+
+``` bash
+make
+```
+
 ## License 
 Copyright 2018 Bryan T. Meyers <bryan@getsol.us>
  
