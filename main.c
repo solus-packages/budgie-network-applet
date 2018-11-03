@@ -16,21 +16,32 @@
 
 #include <gtk/gtk.h>
 
+/* Create a Section pseudo Widget
+ *
+ * @param name      - the name of the section
+ * @param icon_name - the name of the icon to use for this section
+ *
+ * @returns the newly built section widget
+ */
 static GtkWidget * createSectionHeader(const gchar* name, const gchar* icon_name) {
     GtkWidget *header;
     GtkWidget *icon;
     GtkWidget *label;
 
+    /* Build the icon */
     icon  = gtk_image_new_from_icon_name(icon_name, GTK_ICON_SIZE_MENU);
 
+    /* Build the label a left-align the text */
     label = gtk_label_new(name);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
 
+    /* Construct a horizontal box with the two widgets */
     header = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    /* Add the icon as centered with 5-pixel padding */
     gtk_box_pack_start(GTK_BOX(header), icon, FALSE, FALSE, 5);
-    //gtk_container_add(GTK_CONTAINER(header), icon);
+    /* Add the label as expaned with 5-pixel padding */
     gtk_box_pack_start(GTK_BOX(header), label, TRUE, TRUE, 5);
-    //gtk_container_add(GTK_CONTAINER(header), label);
+
     return header;
 }
 

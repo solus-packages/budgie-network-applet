@@ -7,7 +7,7 @@ Applet for managing network connections in Budgie
 
 ## Build
 
-``` bash
+```
 make
 ```
 
