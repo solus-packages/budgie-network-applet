@@ -62,6 +62,8 @@ static GtkWidget * createSection(const gchar* name, const gchar* icon_name) {
 
     section = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_widget_set_margin_top(section, 5);
+    gtk_widget_set_margin_start(section, 5);
+    gtk_widget_set_margin_end(section, 5);
     gtk_widget_set_margin_bottom(section, 5);
     gtk_container_add(GTK_CONTAINER(section), header);
     gtk_container_add(GTK_CONTAINER(section), separator);
@@ -91,8 +93,9 @@ static void activate(GtkApplication* app, gpointer user_data) {
     gtk_container_add(GTK_CONTAINER(box), wlan_section);
 
     window = gtk_application_window_new (app);
-    gtk_window_set_title(GTK_WINDOW (window), "Testing Network Applet");
-    gtk_window_set_default_size(GTK_WINDOW (window), 200, 200);
+    gtk_window_set_title(GTK_WINDOW(window), "Testing Network Applet");
+    gtk_window_set_default_size(GTK_WINDOW(window), 250, -1);
+    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
     gtk_container_add(GTK_CONTAINER(window), box);
 
     gtk_widget_show_all(window);
