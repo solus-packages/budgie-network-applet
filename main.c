@@ -16,12 +16,12 @@
 
 #include <gtk/gtk.h>
 
-/* Create a Section pseudo Widget
+/* Create a Section Header pseudo Widget
  *
  * @param name      - the name of the section
  * @param icon_name - the name of the icon to use for this section
  *
- * @returns the newly built section widget
+ * @returns the newly built section header widget
  */
 static GtkWidget * createSectionHeader(const gchar* name, const gchar* icon_name) {
     GtkWidget *header;
@@ -45,33 +45,57 @@ static GtkWidget * createSectionHeader(const gchar* name, const gchar* icon_name
     return header;
 }
 
+/* Create a Section pseudo Widget
+ *
+ * @param name      - the name of the section
+ * @param icon_name - the name of the icon to use for this section
+ *
+ * @returns the newly built section widget
+ */
+static GtkWidget * createSection(const gchar* name, const gchar* icon_name) {
+    GtkWidget *section;
+    GtkWidget *header;
+    GtkWidget *separator;
+
+    header = createSectionHeader(name, icon_name);
+    separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+
+    section = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_margin_top(section, 5);
+    gtk_widget_set_margin_bottom(section, 5);
+    gtk_container_add(GTK_CONTAINER(section), header);
+    gtk_container_add(GTK_CONTAINER(section), separator);
+
+    return section;
+}
+
 /* Build the test window and setup the applet inside of it
  *
  * @param app       - the application object for this instance
  * @param user_data - unused
  */
 static void activate(GtkApplication* app, gpointer user_data) {
-  GtkWidget *window;
-  GtkWidget *box;
-  GtkWidget *wired_header;
-  GtkWidget *wifi_header;
-  GtkWidget *wlan_header;
+    GtkWidget *window;
+    GtkWidget *box;
+    GtkWidget *wired_section;
+    GtkWidget *wifi_section;
+    GtkWidget *wlan_section;
 
-  wired_header = createSectionHeader("Wired Connections", "network-wired-symbolic");
-  wifi_header = createSectionHeader("WiFi Connections", "network-wireless-symbolic");
-  wlan_header = createSectionHeader("Cellular Connections", "network-cellular-signal-excellent-symbolic");
+    wired_section = createSection("Wired Connections",    "network-wired-symbolic");
+    wifi_section  = createSection("WiFi Connections",     "network-wireless-symbolic");
+    wlan_section  = createSection("Cellular Connections", "network-cellular-signal-excellent-symbolic");
 
-  box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add(GTK_CONTAINER(box), wired_header);
-  gtk_container_add(GTK_CONTAINER(box), wifi_header);
-  gtk_container_add(GTK_CONTAINER(box), wlan_header);
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_add(GTK_CONTAINER(box), wired_section);
+    gtk_container_add(GTK_CONTAINER(box), wifi_section);
+    gtk_container_add(GTK_CONTAINER(box), wlan_section);
 
-  window = gtk_application_window_new (app);
-  gtk_window_set_title(GTK_WINDOW (window), "Testing Network Applet");
-  gtk_window_set_default_size(GTK_WINDOW (window), 200, 200);
-  gtk_container_add(GTK_CONTAINER(window), box);
+    window = gtk_application_window_new (app);
+    gtk_window_set_title(GTK_WINDOW (window), "Testing Network Applet");
+    gtk_window_set_default_size(GTK_WINDOW (window), 200, 200);
+    gtk_container_add(GTK_CONTAINER(window), box);
 
-  gtk_widget_show_all(window);
+    gtk_widget_show_all(window);
 }
 
 /* Main
@@ -82,13 +106,13 @@ static void activate(GtkApplication* app, gpointer user_data) {
  * @returns the status code
  */
 int main(int argc, char **argv) {
-  GtkApplication *app;
-  int status;
+    GtkApplication *app;
+    int status;
 
-  app = gtk_application_new("com.budgie-desktop.applet.network", G_APPLICATION_FLAGS_NONE);
-  g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
-  status = g_application_run(G_APPLICATION (app), argc, argv);
-  g_object_unref(app);
+    app = gtk_application_new("com.budgie-desktop.applet.network", G_APPLICATION_FLAGS_NONE);
+    g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
+    status = g_application_run(G_APPLICATION (app), argc, argv);
+    g_object_unref(app);
 
-  return status;
+    return status;
 }
