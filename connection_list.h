@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-#include "applet.h"
+#ifndef _ORG_BUDGIE_DESKTOP_NETWORK_APPLET_CONNECTION_LIST_H_
+#define _ORG_BUDGIE_DESKTOP_NETWORK_APPLET_CONNECTION_LIST_H_
 
-int main(int argc, char **argv) {
-    GtkApplication *app;
-    int status;
+#include <gtk/gtk.h>
 
-    app = gtk_application_new("org.budgie-desktop.applet.network", G_APPLICATION_FLAGS_NONE);
-    g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
-    status = g_application_run(G_APPLICATION (app), argc, argv);
-    g_object_unref(app);
+GtkWidget * fakeWiredConnectionList();
+GtkWidget * fakeWifiConnectionList();
+GtkWidget * fakeCellularConnectionList();
+GtkWidget * fakeVPNConnectionList();
 
-    return status;
-}
+
+#endif

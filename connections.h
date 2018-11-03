@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-#include "applet.h"
+#ifndef _ORG_BUDGIE_DESKTOP_NETWORK_APPLET_CONNECTIONS_H_
+#define _ORG_BUDGIE_DESKTOP_NETWORK_APPLET_CONNECTIONS_H_
 
-int main(int argc, char **argv) {
-    GtkApplication *app;
-    int status;
+#include <glib-object.h>
 
-    app = gtk_application_new("org.budgie-desktop.applet.network", G_APPLICATION_FLAGS_NONE);
-    g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
-    status = g_application_run(G_APPLICATION (app), argc, argv);
-    g_object_unref(app);
 
-    return status;
-}
+enum {
+    CONNECTION_STATUS_DISABLED,
+    CONNECTION_STATUS_ENABLED
+};
+
+enum {
+    CONNECTION_NAME,
+    CONNECTION_STATUS,
+    CONNECTION_STRENGTH,
+    CONNECTION_NCOLS
+};
+
+G_BEGIN_DECLS
+
+#define NETWORK_TYPE_CONNECTION network_connection_get_type()
+G_DECLARE_FINAL_TYPE (NetworkConnection, network_connection, NETWORK, CONNECTION, GObject)
+
+NetworkConnnection *network_connection_new();
+
+G_END_DECLS
+
+#endif
